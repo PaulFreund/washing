@@ -6,4 +6,5 @@ run cd /app && npm install
 
 add index.js /app/index.js
 
+expose 80
 cmd cd /app && node index.js
