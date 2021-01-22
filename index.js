@@ -1,56 +1,41 @@
-const express = require('express');
-const { writeFile } = require('fs');
-const { resolve } = require('path');
+const {writeFile} = require('fs');
+const {resolve} = require('path');
 const moment = require('moment');
+var http = require("http");
 
 const SANDBOX = '/data';
+const srv = http.createServer(function (req, res) {
+	var begin = new Date();
+    if (req.method == 'POST') {
+        var body = '';
+        req.on('data', (data) => {
+            body += data
+        });
 
-const app = express();
+        req.on('end', () => {
+            for (let event of body.split("\n")) {
+                if (event.trim().length > 0) {
+                    const fullPath = resolve(SANDBOX, moment().valueOf().toString());
+                    //const content = JSON.stringify(request.body, null, 2);
 
-app.use(function(req, res, next) {
-  req.body = '';
-  req.setEncoding('utf8');
+                    writeFile(fullPath, event, function (error) {
+                        if (error != null) {
+                            console.log(`Error saving ${ content }`);
 
-  req.on('data', function(chunk) { 
-    req.body += chunk;
-  });
-
-  req.on('end', function() {
-    next();
-  });
-});
-
-app.post('/dataapi/dispatchSensorsData', function(request, response) {
-  const auth = request.headers['statwolf-auth'];
-
-  if(auth == null || auth !== 'porcia.worker:statwolf2020') {
-    response.send(401);
-
-    return;
-  }
-
-  console.log(request.headers);
-  console.log(request.body);
-
-  const fullPath = resolve(SANDBOX, moment().valueOf().toString());
-  //const content = JSON.stringify(request.body, null, 2);
-
-  writeFile(fullPath, request.body, function(error) {
-    if(error != null) {
-      console.log(`Error saving ${ content }`);
-
-      return;
+                            return;
+                        }
+                    });
+                    //processData(timestamp, event)
+                    // console.log(event);
+                }
+            }
+        });
     }
-  });
 
-  response.json({
-    Success: true,
-    Data: {
-      message: "this is a mock endpoint to test connectivity"
-    }
-  });
-});
-
-app.listen(80, '0.0.0.0', function() {
-  console.log('Service running on http://0.0.0.0:80');
+    res.writeHead(200);
+    res.end();
+	var end = new Date();
+	console.log(end-begin);
+}).listen(80, () => {
+    console.log('TestCollector started on port ' + srv.address().port);
 });
