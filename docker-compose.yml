@@ -5,6 +5,10 @@ services:
     image: 'statwolf/washing:0.0.0'
     build: .
     volumes:
-      - '/tmp/data:/data'
+      - './index.js:/source/index.js'
+      - './package-lock.json:/source/package-lock.json'
+      - './package.json:/source/package.json'
+      - './workers:/source/workers'
+    command: 'sh -c "export NODE_ENV=development && cd /source && npm install && npm run develop"'
     ports:
       - '9999:80'

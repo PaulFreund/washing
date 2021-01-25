@@ -4,12 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "develop": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "4.17.1",
-    "moment": "2.29.1"
+    "mkdirp": "1.0.4",
+    "moment": "2.29.1",
+    "node-fetch": "2.6.1"
+  },
+  "devDependencies": {
+    "nodemon": "2.0.7"
   }
 }
