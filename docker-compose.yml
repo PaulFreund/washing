@@ -2,7 +2,7 @@ version: '3'
 
 services:
   app:
-    image: 'statwolf/washing:0.0.5'
+    image: 'statwolf/washing:0.0.6'
     volumes:
       - '/data/washing:/data'
     ports:
