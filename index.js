@@ -4,7 +4,7 @@ const workers = require('./workers');
 const srv = http.createServer(function(req, res) {
   const begin = new Date();
 
-  if (req.method !== 'POST' || req.url !== '/dataapi/dispatchSensorsData') {
+  if (req.method !== 'POST') {
     res.statusCode = 400;
     res.end();
 
