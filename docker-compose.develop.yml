@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    volumes:
+      - './index.js:/source/index.js'
+      - './package-lock.json:/source/package-lock.json'
+      - './package.json:/source/package.json'
+      - './workers:/source/workers'
+      - '/tmp/washing:/data'
+    command: 'sh -c "export NODE_ENV=development && cd /source && npm install && npm run develop"'
